@@ -38,7 +38,11 @@
       <div class="container">
         <h1 class="text-center">Time Scheduler</h1>
         <!-- Form -->
-        <form action="" class="border p-5 rounded shadow-lg mt-5">
+        <form
+          onsubmit="handleSubmit(this)"
+          action="javascript:void(0)"
+          class="border p-5 rounded shadow-lg mt-5"
+        >
           <div class="row g-2">
             <div class="col-md-7">
               <input
@@ -79,47 +83,7 @@
                   <th scope="col"></th>
                 </tr>
               </thead>
-              <tbody>
-                <tr>
-                  <td scope="row">1</td>
-                  <td>Sleeping</td>
-                  <td>40hr</td>
-                  <td class="text-end">
-                    <button class="btn btn-danger">
-                      <i class="fa-solid fa-trash"></i>
-                    </button>
-                    <button class="btn btn-success">
-                      <i class="fa-solid fa-arrow-right"></i>
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  <td scope="row">1</td>
-                  <td>Sleeping</td>
-                  <td>40hr</td>
-                  <td class="text-end">
-                    <button class="btn btn-danger">
-                      <i class="fa-solid fa-trash"></i>
-                    </button>
-                    <button class="btn btn-success">
-                      <i class="fa-solid fa-arrow-right"></i>
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  <td scope="row">1</td>
-                  <td>Sleeping</td>
-                  <td>40hr</td>
-                  <td class="text-end">
-                    <button class="btn btn-danger">
-                      <i class="fa-solid fa-trash"></i>
-                    </button>
-                    <button class="btn btn-success">
-                      <i class="fa-solid fa-arrow-right"></i>
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
+              <tbody id="taskList"></tbody>
             </table>
           </div>
           <!-- Not to do list table -->
