@@ -8,11 +8,13 @@ const handleSubmit = (e) => {
   const obj = {
     task,
     hr,
+    uniqueId: randomIdGenerator(4),
   };
   EntryList.push(obj);
   displayList();
 };
 const displayList = () => {
+  console.log(EntryList);
   let strList = "";
   const entryElm = document.getElementById("taskList");
   EntryList.map((item, i) => {
@@ -21,7 +23,9 @@ const displayList = () => {
       <td>${item.task}</td>
       <td>${item.hr}hrs</td>
       <td class="text-end">
-        <button class="btn btn-danger">
+        <button onclick="deleteAction('${
+          item.uniqueId
+        }')" class="btn btn-danger">
           <i class="fa-solid fa-trash"></i>
         </button>
         <button class="btn btn-success">
@@ -31,4 +35,22 @@ const displayList = () => {
     </tr>`;
   });
   entryElm.innerHTML = strList;
+};
+
+const randomIdGenerator = (length) => {
+  const randomString = "1234567890qwertyuiopasdfghjklzxcvbnm";
+  let uniqueId = "Task-";
+  for (let i = 0; i < length; i++) {
+    const randomNumIndex = Math.floor(Math.random() * randomString.length);
+    uniqueId += randomString[randomNumIndex];
+  }
+  return uniqueId;
+};
+const deleteAction = (id) => {
+  if (window.confirm("Are you sure, you wanna remove this task?")) {
+    const filteredEntryList = EntryList.filter((item) => item.uniqueId != id);
+    // console.log(filteredEntryList);
+    EntryList = filteredEntryList;
+    displayList();
+  }
 };
