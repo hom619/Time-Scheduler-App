@@ -1,4 +1,4 @@
-let EntryList = [];
+let taskList = [];
 const handleSubmit = (e) => {
   // alert("Hello you just clicked me");
   const formData = new FormData(e);
@@ -9,15 +9,16 @@ const handleSubmit = (e) => {
     task,
     hr,
     uniqueId: randomIdGenerator(4),
+    type: "entry",
   };
-  EntryList.push(obj);
+  taskList.push(obj);
   displayList();
 };
 const displayList = () => {
-  console.log(EntryList);
+  const entryList = taskList.filter((item) => item.type === "entry");
   let strList = "";
   const entryElm = document.getElementById("taskList");
-  EntryList.map((item, i) => {
+  entryList.map((item, i) => {
     strList += `<tr>
       <td scope="row">${i + 1}</td>
       <td>${item.task}</td>
@@ -28,7 +29,9 @@ const displayList = () => {
         }')" class="btn btn-danger">
           <i class="fa-solid fa-trash"></i>
         </button>
-        <button class="btn btn-success">
+        <button onclick="switchAction('${
+          item.uniqueId
+        }','bad')" class="btn btn-success">
           <i class="fa-solid fa-arrow-right"></i>
         </button>
       </td>
@@ -48,9 +51,46 @@ const randomIdGenerator = (length) => {
 };
 const deleteAction = (id) => {
   if (window.confirm("Are you sure, you wanna remove this task?")) {
-    const filteredEntryList = EntryList.filter((item) => item.uniqueId != id);
+    const filteredEntryList = taskList.filter((item) => item.uniqueId != id);
     // console.log(filteredEntryList);
-    EntryList = filteredEntryList;
+    taskList = filteredEntryList;
     displayList();
+    displayBadList();
   }
+};
+const switchAction = (id, type) => {
+  taskList = taskList.map((item) => {
+    if (item.uniqueId === id) {
+      item.type = type;
+    }
+    return item;
+  });
+  displayList();
+  displayBadList();
+};
+let NotToDoList = [];
+const displayBadList = () => {
+  const badList = taskList.filter((item) => item.type === "bad");
+  let strList = "";
+  const badEntryElm = document.getElementById("badList");
+  badList.map((item, i) => {
+    strList += `<tr>
+      <td scope="row">${i + 1}</td>
+      <td>${item.task}</td>
+      <td>${item.hr}hrs</td>
+      <td class="text-end">
+        <button <button onclick="switchAction('${
+          item.uniqueId
+        }','entry')" class="btn btn-warning">
+          <i class="fa-solid fa-arrow-left"></i>
+        </button>
+        <button onclick="deleteAction('${
+          item.uniqueId
+        }')"class="btn btn-danger">
+          <i class="fa-solid fa-trash"></i>
+        </button>
+      </td>
+    </tr>`;
+  });
+  badEntryElm.innerHTML = strList;
 };
