@@ -1,18 +1,32 @@
 let taskList = [];
+const allocatedHoursPerWeek = 24 * 7;
 const handleSubmit = (e) => {
   // alert("Hello you just clicked me");
   const formData = new FormData(e);
   const task = formData.get("task");
-  const hr = formData.get("hr");
-
+  const hr = +formData.get("hr");
+  if (hr > allocatedHoursPerWeek) {
+    alert(
+      `Sorry, total allocated hours per week is ${allocatedHoursPerWeek} hours`
+    );
+    return;
+  }
   const obj = {
     task,
     hr,
     uniqueId: randomIdGenerator(4),
     type: "entry",
   };
+  const totalExistinghours = calculateTotalhours();
+  if (totalExistinghours + hr > allocatedHoursPerWeek) {
+    alert(
+      `Sorry, total allocated hours per week is ${allocatedHoursPerWeek} hrs`
+    );
+    return;
+  }
   taskList.push(obj);
   displayList();
+  calculateTotalhours();
 };
 const displayList = () => {
   const entryList = taskList.filter((item) => item.type === "entry");
@@ -67,6 +81,7 @@ const switchAction = (id, type) => {
   });
   displayList();
   displayBadList();
+  calculateSavedhours();
 };
 let NotToDoList = [];
 const displayBadList = () => {
@@ -93,4 +108,19 @@ const displayBadList = () => {
     </tr>`;
   });
   badEntryElm.innerHTML = strList;
+};
+const calculateTotalhours = () => {
+  const totalhours = taskList.reduce((acc, item) => {
+    return acc + item.hr;
+  }, 0);
+  document.getElementById("totalhours").innerHTML = totalhours;
+  return totalhours;
+};
+
+const calculateSavedhours = () => {
+  const badList = taskList.filter((item) => item.type === "bad");
+  const savedHours = badList.reduce((acc, item) => {
+    return acc + item.hr;
+  }, 0);
+  document.getElementById("savedhours").innerHTML = savedHours;
 };
